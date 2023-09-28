@@ -13,14 +13,13 @@ class Item:
         класс-метод, инициализирующий экземпляры класса Item данными из файла 'file'.csv
         """
         cls.all = []
-        if file != "items.csv":
-            file_lst_path = file.split("/")
-            #with open(os.path.join("..", file_lst_path[0], file_lst_path[1]), encoding="cp1251") as f:
-            with open(os.path.join(file_lst_path[0], file_lst_path[1]), encoding="cp1251") as f:
-                reader = csv.DictReader(f)
-                for item in reader:
-                    cls.all.append(cls(item['name'], item['price'], item['quantity']))
-            return cls.all
+        file_lst_path = file.split("/")
+        with open(os.path.join("..", file_lst_path[0], file_lst_path[1]), encoding="cp1251") as f:
+        # with open(os.path.join(file_lst_path[0], file_lst_path[1]), encoding="cp1251") as f:
+            reader = csv.DictReader(f)
+            for item in reader:
+                cls.all.append(cls(item['name'], item['price'], item['quantity']))
+        return cls.all
 
 
     @staticmethod
@@ -60,7 +59,6 @@ class Item:
         """
         self.__name = new_name[0:10]
 
-        # self.__name = name[0:10]
 
     def calculate_total_price(self) -> float:
         """
