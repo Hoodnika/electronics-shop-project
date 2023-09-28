@@ -13,12 +13,15 @@ class Item:
         класс-метод, инициализирующий экземпляры класса Item данными из файла 'file'.csv
         """
         cls.all = []
-        file_lst_path = file.split("/")
-        with open(os.path.join("..", file_lst_path[0], file_lst_path[1]), encoding="cp1251") as f:
-            reader = csv.DictReader(f)
-            for item in reader:
-                cls.all.append(cls(item['name'], item['price'], item['quantity']))
-        return cls.all
+        if file != "items.csv":
+            file_lst_path = file.split("/")
+            #with open(os.path.join("..", file_lst_path[0], file_lst_path[1]), encoding="cp1251") as f:
+            with open(os.path.join(file_lst_path[0], file_lst_path[1]), encoding="cp1251") as f:
+                reader = csv.DictReader(f)
+                for item in reader:
+                    cls.all.append(cls(item['name'], item['price'], item['quantity']))
+            return cls.all
+
 
     @staticmethod
     def string_to_number(num_str):
