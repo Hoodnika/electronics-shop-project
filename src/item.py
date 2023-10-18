@@ -1,5 +1,7 @@
 import csv
 import os
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -20,7 +22,6 @@ class Item:
             for item in reader:
                 cls.all.append(cls(item['name'], item['price'], item['quantity']))
         return cls.all
-
 
     @staticmethod
     def string_to_number(num_str):
@@ -50,6 +51,11 @@ class Item:
     def __str__(self):
         return f"{self.__name}"
 
+    def __add__(self, other):
+        if issubclass(other.__class__, Item):
+            return self.quantity + other.quantity
+        else:
+            raise ValueError('Складывать можно только телефоны и предметы')
 
     @property
     def name(self):
@@ -64,7 +70,6 @@ class Item:
         Setter для атрибута name с максимальным кол-во символов в 10
         """
         self.__name = new_name[0:10]
-
 
     def calculate_total_price(self) -> float:
         """
@@ -81,6 +86,3 @@ class Item:
         """
         self.price = self.price * Item.pay_rate
         return self.price
-
-
-
