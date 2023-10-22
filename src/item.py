@@ -10,18 +10,21 @@ class Item:
     all = []
 
     @classmethod
-    def instantiate_from_csv(cls, file):
+    def instantiate_from_csv(cls, file = '../src/broken_items.csv'):
         """
         класс-метод, инициализирующий экземпляры класса Item данными из файла 'file'.csv
         """
-        cls.all = []
-        file_lst_path = file.split("/")
-        with open(os.path.join("..", file_lst_path[0], file_lst_path[1]), encoding="cp1251") as f:
-        # with open(os.path.join(file_lst_path[0], file_lst_path[1]), encoding="cp1251") as f:
-            reader = csv.DictReader(f)
-            for item in reader:
-                cls.all.append(cls(item['name'], item['price'], item['quantity']))
-        return cls.all
+        try:
+            cls.all = []
+            with open(file, encoding="cp1251") as f:
+                reader = csv.DictReader(f)
+                for item in reader:
+                    cls.all.append(cls(item['name'], item['price'], item['quantity']))
+            return cls.all
+        except KeyError:
+            raise InstantiateCSVError
+        except FileNotFoundError:
+            raise FileNotFoundError(f'Отсутствует файл item.csv')
 
     @staticmethod
     def string_to_number(num_str):
@@ -86,3 +89,11 @@ class Item:
         """
         self.price = self.price * Item.pay_rate
         return self.price
+
+class InstantiateCSVError(Exception):
+
+    def __inin__(self):
+        pass
+
+    def __str__(self):
+        return 'Файл item.csv поврежден'
