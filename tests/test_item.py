@@ -1,5 +1,5 @@
 import pytest
-from src.item import Item
+from src.item import Item, InstantiateCSVError
 """Здесь надо написать тесты с использованием pytest для модуля item."""
 
 def test_string_to_number():
@@ -9,8 +9,12 @@ def test_string_to_number():
     with pytest.raises(ValueError):
         Item.string_to_number("word")
 
-# def test_instantiate_from_csv():
-#     assert Item.instantiate_from_csv("src/items.csv")[0].name == "Смартфон"
+def test_instantiate_from_csv():
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv('JustNothing')
+
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv('tests/broken_items.csv')
 
 def test_calculate_total_price():
     laptop = Item("Ноутбук", 50000, 3)
